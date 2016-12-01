@@ -1,0 +1,173 @@
+// compass libraries
+@import "compass/css3";
+// defaults & vars
+@function map($map, $keys...) { // to access multi-maps aka vars with arrays in several deepness
+  $value: $map;
+  @each $key in $keys {
+    $value: map-get($value, $key);
+  }
+  @return $value;
+}
+
+@mixin col($i, $cols: $columns) {
+	// -ms-flex-preferred-size: percentage($i/$cols);
+	// flex: 0 0 percentage($i/$cols);
+	flex-basis: percentage($i/$cols);
+	max-width: percentage($i/$cols);
+}
+//#########################################
+
+
+/* TODO: REMOVE THIS!!! */
+// $breakpoint-s: 480px; // 30rem
+$breakpoint-s: /*544px;*/ 34rem;
+$breakpoint-m: /*768px;*/ 48rem;
+$breakpoint-l: /*992px;*/ 62rem;
+$breakpoint-xl: /*1376px;*/ 86rem;
+$columns: 12;
+
+$names: (
+	grid-class: 		"grid",
+	column-class: 		"col",
+	sizes: (
+		1:				"s",
+		2:				"m",
+		3:				"l",
+		4:				"xl",
+	),
+	prefix-grid-attr:	"grid-",
+	prefix-item-attr:	"item-",
+	flex-wrap: 			"wrap",
+	flex-nowrap: 		"nowrap",
+	jc-center:			"center",
+	jc-start:			"start",
+	jc-end:				"end",
+	jc-between:			"between",
+	jc-around:			"around",
+	fd-row: 			"row",
+	fd-row-rev: 		"row-rev",
+	fd-column: 			"column",
+	fd-column-rev: 		"column-rev",
+	item-stretch: 		"stretch",
+	item-start: 		"top",
+	item-end: 			"bottom",
+	item-center: 		"middle",
+);
+
+.#{map($names, grid-class)} {
+	display: flex;
+	flex-wrap: wrap;
+
+	> .#{map($names, grid-class)} {
+		display: inline-flex;
+	}
+
+	&.#{map($names, prefix-grid-attr)}#{map($names, flex-wrap)} {
+		flex-wrap: wrap;
+	}
+
+	&.#{map($names, prefix-grid-attr)}#{map($names, flex-nowrap)} {
+		flex-wrap: nowrap;
+	}
+
+	&.#{map($names, prefix-grid-attr)}#{map($names, jc-center)} {
+		justify-content: center;
+	}
+
+	&.#{map($names, prefix-grid-attr)}#{map($names, jc-start)} {
+		justify-content: flex-start;
+	}
+
+	&.#{map($names, prefix-grid-attr)}#{map($names, jc-end)} {
+		justify-content: flex-end;
+	}
+
+	&.#{map($names, prefix-grid-attr)}#{map($names, jc-between)} {
+		justify-content: space-between;
+	}
+
+	&.#{map($names, prefix-grid-attr)}#{map($names, jc-around)} {
+		justify-content: space-around;
+	}
+
+	&.#{map($names, prefix-grid-attr)}#{map($names, fd-row)} {
+		flex-direction: row;
+	}
+
+	&.#{map($names, prefix-grid-attr)}#{map($names, fd-row-rev)} {
+		flex-direction: row;
+	}
+
+	&.#{map($names, prefix-grid-attr)}#{map($names, fd-column)} {
+		flex-direction: column;
+	}
+
+	&.#{map($names, prefix-grid-attr)}#{map($names, fd-column-rev)} {
+		flex-direction: column-reverse;
+	}
+
+	> .#{map($names, prefix-item-attr)}#{map($names, item-stretch)} {
+		align-items: stretch;
+	}
+
+	> .#{map($names, prefix-item-attr)}#{map($names, item-start)} {
+		align-items: flex-start;
+	}
+
+	> .#{map($names, prefix-item-attr)}#{map($names, item-end)} {
+		align-items: flex-end;
+	}
+
+	> .#{map($names, prefix-item-attr)}#{map($names, item-center)} {
+		align-items: center;
+	}
+}
+
+// @for $i from 1 through $columns {
+	// .#{map($names, column-class)}-#{map($names, sizes, 1)}-#{$i},
+	// .#{map($names, column-class)}-#{map($names, sizes, 2)}-#{$i},
+	// .#{map($names, column-class)}-#{map($names, sizes, 3)}-#{$i},
+	[class^="#{map($names, column-class)}-"] {
+		float: left;
+		padding: 0 1em;
+		flex: 0 0 100%;
+		flex-basis: 100%;
+		flex-grow: 0;
+		flex-shrink: 0;
+	}
+
+	// .#{map($names, column-class)}-#{map($names, sizes, 1)}-#{$i} {
+	//	 @include col($i);
+	// }
+// }
+
+@media (min-width: $breakpoint-s) {
+	@for $i from 1 through $columns {
+		.#{map($names, column-class)}-#{map($names, sizes, 1)}-#{$i} {
+			@include col($i);
+		}
+	}
+}
+@media (min-width: $breakpoint-m) {
+	@for $i from 1 through $columns {
+		.#{map($names, column-class)}-#{map($names, sizes, 2)}-#{$i} {
+			@include col($i);
+		}
+	}
+}
+
+@media (min-width: $breakpoint-l) {
+	@for $i from 1 through $columns {
+		.#{map($names, column-class)}-#{map($names, sizes, 3)}-#{$i} {
+			@include col($i);
+		}
+	}
+}
+
+@media (min-width: $breakpoint-xl) {
+	@for $i from 1 through $columns {
+		.#{map($names, column-class)}-#{map($names, sizes, 4)}-#{$i} {
+			@include col($i);
+		}
+	}
+}
