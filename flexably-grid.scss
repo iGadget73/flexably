@@ -1,17 +1,17 @@
-// compass libraries
-@import "compass/css3";
 // defaults & vars
 @function map($map, $keys...) { // to access multi-maps aka vars with arrays in several deepness
   $value: $map;
   @each $key in $keys {
-    $value: map-get($value, $key);
+	$value: map-get($value, $key);
   }
   @return $value;
 }
 
+@function get-name($keys...) { // alias
+	@return map($names, $keys...);
+}
+
 @mixin col($i, $cols: $columns) {
-	// -ms-flex-preferred-size: percentage($i/$cols);
-	// flex: 0 0 percentage($i/$cols);
 	flex-basis: percentage($i/$cols);
 	max-width: percentage($i/$cols);
 }
@@ -105,92 +105,94 @@ $names: (
 	text-align: right;
 }
 
-.#{map($names, grid-class)} {
+.#{get-name(grid-class)} {
 	display: flex;
 	flex-wrap: wrap;
 
-	> .#{map($names, grid-class)} {
+	> .#{get-name(grid-class)} {
 		display: inline-flex;
 	}
 
-	&.#{map($names, prefix-grid-attr)}#{map($names, flex-wrap)} {
+	&.#{get-name(prefix-grid-attr)}#{get-name(flex-wrap)} {
 		flex-wrap: wrap;
 	}
 
-	&.#{map($names, prefix-grid-attr)}#{map($names, flex-nowrap)} {
+	&.#{get-name(prefix-grid-attr)}#{get-name(flex-nowrap)} {
 		flex-wrap: nowrap;
 	}
 
-	&.#{map($names, prefix-grid-attr)}#{map($names, jc-center)} {
+	&.#{get-name(prefix-grid-attr)}#{get-name(jc-center)} {
 		justify-content: center;
 	}
 
-	&.#{map($names, prefix-grid-attr)}#{map($names, jc-start)} {
+	&.#{get-name(prefix-grid-attr)}#{get-name(jc-start)} {
 		justify-content: flex-start;
 	}
 
-	&.#{map($names, prefix-grid-attr)}#{map($names, jc-end)} {
+	&.#{get-name(prefix-grid-attr)}#{get-name(jc-end)} {
 		justify-content: flex-end;
 	}
 
-	&.#{map($names, prefix-grid-attr)}#{map($names, jc-between)} {
+	&.#{get-name(prefix-grid-attr)}#{get-name(jc-between)} {
 		justify-content: space-between;
 	}
 
-	&.#{map($names, prefix-grid-attr)}#{map($names, jc-around)} {
+	&.#{get-name(prefix-grid-attr)}#{get-name(jc-around)} {
 		justify-content: space-around;
 	}
 
-	&.#{map($names, prefix-grid-attr)}#{map($names, fd-row)} {
+	&.#{get-name(prefix-grid-attr)}#{get-name(fd-row)} {
 		flex-direction: row;
 	}
 
-	&.#{map($names, prefix-grid-attr)}#{map($names, fd-row-rev)} {
+	&.#{get-name(prefix-grid-attr)}#{get-name(fd-row-rev)} {
 		flex-direction: row;
 	}
 
-	&.#{map($names, prefix-grid-attr)}#{map($names, fd-column)} {
+	&.#{get-name(prefix-grid-attr)}#{get-name(fd-column)} {
 		flex-direction: column;
 	}
 
-	&.#{map($names, prefix-grid-attr)}#{map($names, fd-column-rev)} {
+	&.#{get-name(prefix-grid-attr)}#{get-name(fd-column-rev)} {
 		flex-direction: column-reverse;
 	}
 
-	&.#{map($names, item-stretch)} {
+	&.#{get-name(item-stretch)} {
 		align-items: stretch;
 	}
 
-	&.#{map($names, item-start)} {
+	&.#{get-name(item-start)} {
 		align-items: flex-start;
 	}
 
-	&.#{map($names, item-end)} {
+	&.#{get-name(item-end)} {
 		align-items: flex-end;
 	}
 
-	&.#{map($names, item-center)} {
+	&.#{get-name(item-center)} {
 		align-items: center;
 	}
 
-	> .#{map($names, prefix-item-attr)}#{map($names, item-stretch)} {
+	> .#{get-name(prefix-item-attr)}#{get-name(item-stretch)} {
 		align-self: stretch;
 	}
 
-	> .#{map($names, prefix-item-attr)}#{map($names, item-start)} {
+	> .#{get-name(prefix-item-attr)}#{get-name(item-start)} {
 		align-self: flex-start;
 	}
 
-	> .#{map($names, prefix-item-attr)}#{map($names, item-end)} {
+	> .#{get-name(prefix-item-attr)}#{get-name(item-end)} {
 		align-self: flex-end;
 	}
 
-	> .#{map($names, prefix-item-attr)}#{map($names, item-center)} {
+	> .#{get-name(prefix-item-attr)}#{get-name(item-center)} {
 		align-self: center;
 	}
 }
 
-[class^="#{map($names, column-class)}-"] {
+$cc: get-name(column-class);
+
+[class^="#{$cc}-"] {
 	display: inline-block;
 	float: left;
 	padding: 0 1em;
@@ -200,29 +202,28 @@ $names: (
 	flex-shrink: 0;
 }
 
- }
 
 @each $name, $bp in $breakpoints {
 	@media (min-width: $bp) {
-		.#{map($names, column-class)}-#{$name}-hide {
+		.#{get-name(column-class)}-#{$name}-hide {
 			display: none;
 		}
 
-		.#{map($names, prefix-padding)}#{$name} {
+		.#{get-name(prefix-padding)}#{$name} {
 			padding: 1rem;
 		}
 
-		.#{map($names, prefix-padding)}#{$name}-bottom {
+		.#{get-name(prefix-padding)}#{$name}-bottom {
 			padding-bottom: 1rem;
 		}
 
-		.#{map($names, prefix-padding)}#{$name}-none {
+		.#{get-name(prefix-padding)}#{$name}-none {
 			padding: 0;
 		}
 
 		@for $i from 1 through $columns {
 
-			.#{map($names, column-class)}-#{$name}-#{$i} {
+			.#{get-name(column-class)}-#{$name}-#{$i} {
 				@include col($i);
 				display: inline-block;
 
