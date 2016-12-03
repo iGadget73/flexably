@@ -17,24 +17,19 @@
 }
 //#########################################
 
-
-/* TODO: REMOVE THIS!!! */
-// $breakpoint-s: 480px; // 30rem
-$breakpoint-s: /*544px;*/ 34rem;
-$breakpoint-m: /*768px;*/ 48rem;
-$breakpoint-l: /*992px;*/ 62rem;
-$breakpoint-xl: /*1376px;*/ 86rem;
 $columns: 12;
+
+$breakpoints: (
+		xs: 			20rem,
+		s:				30rem,
+		m:				48rem,
+		l:				62rem,
+		xl:				86rem
+);
 
 $names: (
 	grid-class: 		"grid",
 	column-class: 		"col",
-	sizes: (
-		1:				"s",
-		2:				"m",
-		3:				"l",
-		4:				"xl",
-	),
 	prefix-grid-attr:	"grid-",
 	prefix-item-attr:	"item-",
 	flex-wrap: 			"wrap",
@@ -52,7 +47,63 @@ $names: (
 	item-start: 		"top",
 	item-end: 			"bottom",
 	item-center: 		"middle",
+	prefix-padding: 	"padding-",
 );
+//#########################################
+// default classes
+
+.margin {
+	margin: 1em;
+}
+
+.margin-bottom {
+	margin-bottom: 1em;
+}
+
+.margin-left {
+	margin-left: 1em;
+}
+
+.margin-right {
+	margin-right: 1em;
+}
+
+.no-margin.no-margin.no-margin {
+	margin: 0;
+}
+
+.no-padding.no-padding.no-padding {
+	padding: 0;
+}
+
+.padding {
+	padding: 1em 1em 0 1em;
+}
+
+.padding-bottom {
+	padding-bottom: 1em;
+}
+
+.padding-left {
+	padding-left: 1em;
+}
+
+.padding-right {
+	padding-right: 1em;
+}
+
+.list-inline {
+	>li {
+		display: inline-block;
+	}
+}
+.align-center {
+	text-align: center;
+}
+
+.align-right {
+	text-align: right;
+}
 
 .#{map($names, grid-class)} {
 	display: flex;
@@ -106,68 +157,81 @@ $names: (
 		flex-direction: column-reverse;
 	}
 
-	> .#{map($names, prefix-item-attr)}#{map($names, item-stretch)} {
+	&.#{map($names, item-stretch)} {
 		align-items: stretch;
 	}
 
-	> .#{map($names, prefix-item-attr)}#{map($names, item-start)} {
+	&.#{map($names, item-start)} {
 		align-items: flex-start;
 	}
 
-	> .#{map($names, prefix-item-attr)}#{map($names, item-end)} {
+	&.#{map($names, item-end)} {
 		align-items: flex-end;
 	}
 
-	> .#{map($names, prefix-item-attr)}#{map($names, item-center)} {
+	&.#{map($names, item-center)} {
 		align-items: center;
 	}
-}
 
-// @for $i from 1 through $columns {
-	// .#{map($names, column-class)}-#{map($names, sizes, 1)}-#{$i},
-	// .#{map($names, column-class)}-#{map($names, sizes, 2)}-#{$i},
-	// .#{map($names, column-class)}-#{map($names, sizes, 3)}-#{$i},
-	[class^="#{map($names, column-class)}-"] {
-		float: left;
-		padding: 0 1em;
-		flex: 0 0 100%;
-		flex-basis: 100%;
-		flex-grow: 0;
-		flex-shrink: 0;
+	> .#{map($names, prefix-item-attr)}#{map($names, item-stretch)} {
+		align-self: stretch;
 	}
 
-	// .#{map($names, column-class)}-#{map($names, sizes, 1)}-#{$i} {
-	//	 @include col($i);
-	// }
-// }
+	> .#{map($names, prefix-item-attr)}#{map($names, item-start)} {
+		align-self: flex-start;
+	}
 
-@media (min-width: $breakpoint-s) {
-	@for $i from 1 through $columns {
-		.#{map($names, column-class)}-#{map($names, sizes, 1)}-#{$i} {
-			@include col($i);
+	> .#{map($names, prefix-item-attr)}#{map($names, item-end)} {
+		align-self: flex-end;
+	}
+
+	> .#{map($names, prefix-item-attr)}#{map($names, item-center)} {
+		align-self: center;
+	}
+}
+
+[class^="#{map($names, column-class)}-"] {
+	display: inline-block;
+	float: left;
+	padding: 0 1em;
+	flex: 0 0 100%;
+	flex-basis: 100%;
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+ }
+
+@each $name, $bp in $breakpoints {
+	@media (min-width: $bp) {
+		.#{map($names, column-class)}-#{$name}-hide {
+			display: none;
 		}
-	}
-}
-@media (min-width: $breakpoint-m) {
-	@for $i from 1 through $columns {
-		.#{map($names, column-class)}-#{map($names, sizes, 2)}-#{$i} {
-			@include col($i);
-		}
-	}
-}
 
-@media (min-width: $breakpoint-l) {
-	@for $i from 1 through $columns {
-		.#{map($names, column-class)}-#{map($names, sizes, 3)}-#{$i} {
-			@include col($i);
+		.#{map($names, prefix-padding)}#{$name} {
+			padding: 1rem;
 		}
-	}
-}
 
-@media (min-width: $breakpoint-xl) {
-	@for $i from 1 through $columns {
-		.#{map($names, column-class)}-#{map($names, sizes, 4)}-#{$i} {
-			@include col($i);
+		.#{map($names, prefix-padding)}#{$name}-bottom {
+			padding-bottom: 1rem;
+		}
+
+		.#{map($names, prefix-padding)}#{$name}-none {
+			padding: 0;
+		}
+
+		@for $i from 1 through $columns {
+
+			.#{map($names, column-class)}-#{$name}-#{$i} {
+				@include col($i);
+				display: inline-block;
+
+				@if $i == $columns {
+					padding: 0 0 1em;
+				} @else {
+					// padding: initial;
+				}
+			}
 		}
 	}
 }
